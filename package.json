@@ -17,6 +17,9 @@
     "vite-plugin-solid": "^2.5.0"
   },
   "dependencies": {
+    "chai": "^4.3.7",
+    "chai-as-promised": "^7.1.1",
+    "ethers": "^5.7.2",
     "solid-js": "^1.6.6"
   }
 }
