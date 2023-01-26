@@ -1,7 +1,15 @@
 /* @refresh reload */
-import './index.css';
-import { render } from 'solid-js/web';
+import { render } from "solid-js/web";
+import "./index.css";
 
-import App from './App';
+import App from "./App";
+import { DataProvider } from "./context/DataContext";
 
-render(() => <App />, document.getElementById('root') as HTMLElement);
+render(
+  () => (
+    <DataProvider>
+      <App />
+    </DataProvider>
+  ),
+  document.getElementById("root") as HTMLElement
+);
