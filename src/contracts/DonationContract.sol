@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.6;
 
 contract DonationContract {
   // Keep track of total number of images in contract
