@@ -1,10 +1,12 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@types/identicon.js': ^2.3.1
   autoprefixer: ^10.4.13
   chai: ^4.3.7
   chai-as-promised: ^7.1.1
   ethers: ^5.7.2
+  identicon.js: ^2.3.3
   postcss: ^8.4.20
   solid-js: ^1.6.6
   tailwindcss: ^3.2.4
@@ -16,9 +18,11 @@ dependencies:
   chai: 4.3.7
   chai-as-promised: 7.1.1_chai@4.3.7
   ethers: 5.7.2
+  identicon.js: 2.3.3
   solid-js: 1.6.6
 
 devDependencies:
+  '@types/identicon.js': 2.3.1
   autoprefixer: 10.4.13_postcss@8.4.20
   postcss: 8.4.20
   tailwindcss: 3.2.4
@@ -915,6 +919,10 @@ packages:
       fastq: 1.14.0
     dev: true
 
+  /@types/identicon.js/2.3.1:
+    resolution: {integrity: sha512-QyPIfllzfVTHVJ/xX5+cOKpWuX7Zv0EKQbzTCbIn6QjMOg4bn1j73Av1LIIvRqkDV+TErJuonwZg/IOl4tbPDQ==}
+    dev: true
+
   /acorn-node/1.8.2:
     resolution: {integrity: sha512-8mt+fslDufLYntIoPAaIMUe/lrbrehIiwmR3t2k9LljIzoigEPF27eLk2hy8zSGzmR/ogr7zbRKINMo1u0yh5A==}
     dependencies:
@@ -1356,6 +1364,10 @@ packages:
   /html-entities/2.3.2:
     resolution: {integrity: sha512-c3Ab/url5ksaT0WyleslpBEthOzWhrjQbg75y7XUsfSzi3Dgzt0l8w5e7DylRn15MTlMMD58dTfzddNS2kcAjQ==}
     dev: true
+
+  /identicon.js/2.3.3:
+    resolution: {integrity: sha512-/qgOkXKZ7YbeCYbawJ9uQQ3XJ3uBg9VDpvHjabCAPp6aRMhjLaFAxG90+1TxzrhKaj6AYpVGrx6UXQfQA41UEA==}
+    dev: false
 
   /inherits/2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
