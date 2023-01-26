@@ -3,14 +3,14 @@ module.exports = {
     development: {
       host: "localhost",
       port: 7545,
-      network_id: "5777",
+      network_id: "*",
     },
   },
   contracts_directory: "./src/contracts",
   contracts_build_directory: "./src/abis",
   compilers: {
     solc: {
-      version: "0.8.7",
+      version: "0.8.6",
       optimizer: {
         enabled: true,
         runs: 200,
