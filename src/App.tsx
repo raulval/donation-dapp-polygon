@@ -1,10 +1,12 @@
 import { Component, createSignal } from "solid-js";
 import Body from "./components/Body";
-import { useData } from "./context/DataContext";
+import Header from "./components/Header";
+import { UploadImage } from "./components/UploadImage";
+import DataRoot from "./context/DataRoot";
 
 const App: Component = () => {
   let [isOpen, setIsOpen] = createSignal(false);
-  const { loading } = useData();
+  const { loading } = DataRoot;
 
   function closeModal() {
     setIsOpen(false);
@@ -16,15 +18,15 @@ const App: Component = () => {
 
   return (
     <div class="flex flex-col items-center justify-start min-h-screen py-2">
-      {/* <UploadImage isOpen={isOpen()} closeModal={closeModal} />
-       <Header /> */}
+      <UploadImage isOpen={isOpen()} closeModal={closeModal} />
+      <Header />
       <div
         class="max-w-2xl w-full bg-blue-100 rounded-xl flex justify-center items-center py-2 mt-3 hover:bg-blue-200 cursor-pointer"
         onClick={openModal}
       >
         <span class="text-blue-500 font-bold text-lg">Upload Image</span>
       </div>
-      {loading ? (
+      {loading() ? (
         <div class="font-bold text-gray-400 mt-36 text-4xl">Loading...</div>
       ) : (
         <Body />

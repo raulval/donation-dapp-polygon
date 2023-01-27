@@ -2,7 +2,7 @@ declare let window: any;
 import { ethers } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import Identicon from "identicon.js";
-import { useData } from "../../../context/DataContext";
+import DataRoot from "../../../context/DataRoot";
 
 type BodyItemsProps = {
   address: string;
@@ -19,7 +19,7 @@ const BodyItem = ({
   hash,
   id,
 }: BodyItemsProps) => {
-  const { donateImageOwner, updateImages } = useData();
+  const { donateImageOwner, updateImages } = DataRoot;
   var data = new Identicon(address, 200).toString();
 
   return (
