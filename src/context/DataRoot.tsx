@@ -1,15 +1,11 @@
-declare let window: any;
+declare let window: {
+  ethereum: ethers.providers.ExternalProvider;
+};
 import { ethers } from "ethers";
-import {
-  Accessor,
-  createContext,
-  createEffect,
-  createSignal,
-  useContext,
-} from "solid-js";
+import { Accessor, createRoot, createSignal, onMount } from "solid-js";
 import DonationContract from "../abis/DonationContract.json";
 
-interface DataContextProps {
+interface DataRootProps {
   account: Accessor<string>;
   contract: Accessor<any>;
   loading: Accessor<boolean>;
@@ -19,50 +15,40 @@ interface DataContextProps {
   donateImageOwner: (id: string, donateAmout: any) => Promise<void>;
 }
 
-const DataContext = createContext<DataContextProps>({} as DataContextProps);
-
-export const DataProvider = ({ children }) => {
-  const data = useProviderData();
-  return <DataContext.Provider value={data}>{children}</DataContext.Provider>;
-};
-
-export const useData = () => useContext<DataContextProps>(DataContext);
-
-export const useProviderData = () => {
+const useRootData = () => {
   const [loading, setLoading] = createSignal(true);
   const [images, setImages] = createSignal([]);
   const [imageCount, setImageCount] = createSignal(0);
   const [account, setAccount] = createSignal("0x0");
   const [contract, setContract] = createSignal<any>();
 
-  createEffect(() => {
+  onMount(() => {
     loadWeb3();
     loadBlockchainData();
   });
 
   const loadWeb3 = async () => {
-    if (window.ethereum) {
-      await window.ethereum.enable();
-    } else {
-      window.alert("Non-Eth browser detected. Please consider using MetaMask.");
+    if (!window.ethereum) {
+      alert("Non-Eth browser detected. Please consider using MetaMask.");
     }
   };
 
   const loadBlockchainData = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
     const allAccounts = await provider.listAccounts();
     setAccount(allAccounts[0]);
+
+    const signer = provider.getSigner(allAccounts[0]);
 
     const networkId = (await provider.getNetwork()).chainId.toString();
     const networkData = DonationContract.networks[networkId];
 
-    console.log("networkData", networkData);
-    console.log("networkId", networkId);
-
     if (networkData) {
       const tempContract = new ethers.Contract(
         networkData.address,
-        DonationContract.abi
+        DonationContract.abi,
+        signer
       );
       setContract(tempContract);
 
@@ -77,7 +63,7 @@ export const useProviderData = () => {
       tempImageList.reverse();
       setImages(tempImageList);
     } else {
-      window.alert("TestNet not found");
+      alert("TestNet not found");
     }
     setLoading(false);
   };
@@ -115,3 +101,5 @@ export const useProviderData = () => {
     donateImageOwner,
   };
 };
+
+export default createRoot(useRootData);
