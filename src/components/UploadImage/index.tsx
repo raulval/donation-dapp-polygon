@@ -1,22 +1,38 @@
+import { Buffer } from "buffer";
 import { create } from "ipfs-http-client";
 import {
   Dialog,
   DialogOverlay,
+  DialogPanel,
   DialogTitle,
   Transition,
   TransitionChild,
 } from "solid-headless";
-import { Component, createSignal } from "solid-js";
+import { Accessor, Component, createSignal } from "solid-js";
 import DataRoot from "../../context/DataRoot";
 
 interface Props {
-  isOpen: boolean;
+  isOpen: Accessor<boolean>;
   closeModal: () => void;
 }
 
 export const UploadImage: Component<Props> = ({ isOpen, closeModal }) => {
-  const { contract, account, updateImages } = DataRoot;
-  const client = create({ url: "https://ipfs.infura.io:5001/api/v0" });
+  const { contract, updateImages } = DataRoot;
+  const auth =
+    "Basic " +
+    Buffer.from(
+      import.meta.env.VITE_INFURA_PROJECT_ID +
+        ":" +
+        import.meta.env.VITE_INFURA_API_SECRET
+    ).toString("base64");
+  const client = create({
+    host: "ipfs.infura.io",
+    port: 5001,
+    protocol: "https",
+    headers: {
+      authorization: auth,
+    },
+  });
   const [buttonTxt, setButtonTxt] = createSignal<string>("Upload");
   const [file, setFile] = createSignal<File | null>(null);
   const [description, setDescription] = createSignal<string>("");
@@ -25,9 +41,13 @@ export const UploadImage: Component<Props> = ({ isOpen, closeModal }) => {
     setButtonTxt("Uploading to IPFS...");
     const added = await client.add(file());
     setButtonTxt("Creating smart contract...");
+
+    console.log("path:", added);
+    console.log("description:", description());
+    console.log("file:", file());
+
     contract()
-      .methods.uploadImage(added.path, description())
-      .send({ from: account() })
+      .uploadImage(added.path, description())
       .then(async () => {
         await updateImages();
         setFile(null);
@@ -42,15 +62,13 @@ export const UploadImage: Component<Props> = ({ isOpen, closeModal }) => {
 
   return (
     <>
-      <Transition appear show={isOpen}>
+      <Transition appear show={isOpen()}>
         <Dialog
           isOpen
           class="fixed inset-0 z-10 overflow-y-auto"
           onClose={closeModal}
         >
-          <DialogOverlay class="fixed inset-0 bg-black opacity-40" />
-
-          <div class="min-h-screen px-4 text-center ">
+          <div class="min-h-screen px-4 flex items-center justify-center">
             <TransitionChild
               enter="ease-out duration-300"
               enterFrom="opacity-0"
@@ -59,7 +77,7 @@ export const UploadImage: Component<Props> = ({ isOpen, closeModal }) => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <DialogOverlay class="fixed inset-0" />
+              <DialogOverlay class="fixed inset-0 bg-black opacity-40" />
             </TransitionChild>
 
             {/* This element is to trick the browser into centering the modal contents. */}
@@ -74,7 +92,7 @@ export const UploadImage: Component<Props> = ({ isOpen, closeModal }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div class="inline-block w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl max-w-xl">
+              <DialogPanel class="inline-block w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl max-w-xl">
                 <DialogTitle
                   as="h3"
                   class="text-lg font-medium leading-6 text-gray-900"
@@ -83,13 +101,15 @@ export const UploadImage: Component<Props> = ({ isOpen, closeModal }) => {
                 </DialogTitle>
                 <div class="mt-2">
                   <input
-                    onchange={(e) => setFile(e.currentTarget.files[0])}
+                    onChange={(e: Event) =>
+                      setFile(() => (e.target as HTMLInputElement).files[0])
+                    }
                     class="my-3"
                     type="file"
                   />
                 </div>
 
-                {file && (
+                {file() && (
                   <div class="mt-2">
                     <img src={URL.createObjectURL(file())} />
                   </div>
@@ -97,8 +117,8 @@ export const UploadImage: Component<Props> = ({ isOpen, closeModal }) => {
 
                 <div class="mt-4">
                   <textarea
-                    onchange={(e) => {
-                      setDescription(e.currentTarget.value);
+                    onChange={(e: Event) => {
+                      setDescription((e.target as HTMLInputElement).value);
                     }}
                     value={description()}
                     placeholder="Description"
@@ -110,14 +130,14 @@ export const UploadImage: Component<Props> = ({ isOpen, closeModal }) => {
                     type="button"
                     disabled={buttonTxt() !== "Upload"}
                     class="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                    onclick={() => {
+                    onClick={() => {
                       if (file()) uploadImage();
                     }}
                   >
                     {buttonTxt()}
                   </button>
                 </div>
-              </div>
+              </DialogPanel>
             </TransitionChild>
           </div>
         </Dialog>
