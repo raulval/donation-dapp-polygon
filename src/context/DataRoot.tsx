@@ -2,18 +2,8 @@ declare let window: {
   ethereum: ethers.providers.ExternalProvider;
 };
 import { ethers } from "ethers";
-import { Accessor, createRoot, createSignal, onMount } from "solid-js";
+import { createRoot, createSignal, onMount } from "solid-js";
 import DonationContract from "../abis/DonationContract.json";
-
-interface DataRootProps {
-  account: Accessor<string>;
-  contract: Accessor<any>;
-  loading: Accessor<boolean>;
-  images: Accessor<any[]>;
-  imageCount: Accessor<number>;
-  updateImages: () => Promise<void>;
-  donateImageOwner: (id: string, donateAmout: any) => Promise<void>;
-}
 
 const useRootData = () => {
   const [loading, setLoading] = createSignal(true);
