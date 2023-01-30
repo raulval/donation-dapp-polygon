@@ -18,7 +18,7 @@ const App: Component = () => {
 
   return (
     <div class="flex flex-col items-center justify-start min-h-screen py-2">
-      <UploadImage isOpen={isOpen()} closeModal={closeModal} />
+      <UploadImage isOpen={isOpen} closeModal={closeModal} />
       <Header />
       <div
         class="max-w-2xl w-full bg-blue-100 rounded-xl flex justify-center items-center py-2 mt-3 hover:bg-blue-200 cursor-pointer"
