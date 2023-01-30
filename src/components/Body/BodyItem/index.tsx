@@ -28,7 +28,7 @@ const BodyItem = ({
         <img width={35} height={35} src={`data:image/png;base64, ${data}`} />
         <div class="overflow-ellipsis w-52 overflow-hidden">{address}</div>
       </div>
-      <img src={`https://ipfs.infura.io/ipfs/${hash}`} />
+      <img src={`https://donation-dapp.infura-ipfs.io/ipfs/${hash}`} />
       <div class="py-3 px-4 flex flex-col border-l border-r">
         <span class="font-sans font-bold">Description</span>
         <span class="font-sans pt-2">{description}</span>
