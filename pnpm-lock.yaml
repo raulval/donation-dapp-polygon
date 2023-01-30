@@ -4,6 +4,7 @@ specifiers:
   '@truffle/hdwallet-provider': ^2.1.5
   '@types/identicon.js': ^2.3.1
   autoprefixer: ^10.4.13
+  buffer: ^6.0.3
   chai: ^4.3.7
   chai-as-promised: ^7.1.1
   ethers: ^5.7.2
@@ -19,6 +20,7 @@ specifiers:
 
 dependencies:
   '@truffle/hdwallet-provider': 2.1.5
+  buffer: 6.0.3
   chai: 4.3.7
   chai-as-promised: 7.1.1_chai@4.3.7
   ethers: 5.7.2
